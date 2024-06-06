@@ -1,10 +1,54 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, SafeAreaView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CadAluno = () => {
-  const [selectedSerie, setSelectedSerie] = React.useState();
-  const [selectedCurso, setSelectedCurso] = React.useState();
+  const [nome, setNome] = useState("");
+  const [selectedSerie, setSelectedSerie] = useState("");
+  const [selectedCurso, setSelectedCurso] = useState("");
+  const [errorNome, setErrorNome] = useState("");
+  const [errorSerie, setErrorSerie] = useState("");
+  const [errorCurso, setErrorCurso] = useState("");
+
+  const validar = () => {
+    let error = false;
+    setErrorNome("");
+    setErrorSerie("");
+    setErrorCurso("");
+
+    if (nome.trim() === "") {
+      setErrorNome("Por favor, insira o nome do aluno");
+      error = true;
+    }
+    if (selectedSerie === "") {
+      setErrorSerie("Por favor, selecione a série do aluno");
+      error = true;
+    }
+    if (selectedCurso === "") {
+      setErrorCurso("Por favor, selecione o curso do aluno");
+      error = true;
+    }
+    return !error;
+  };
+
+  const salvar = () => {
+    if (validar()) {
+      const data = {
+        nome: nome,
+        serie: selectedSerie,
+        curso: selectedCurso
+      };
+      // Substitua esta chamada com a chamada para o serviço apropriado
+      usuarioService.cadastrarAluno(data)
+        .then(response => {
+          // Lógica de tratamento da resposta
+        })
+        .catch(error => {
+          // Lógica de tratamento de erro
+        });
+    }
+  };
 
   return (
     <View style={styles.cadaluno}>
@@ -18,15 +62,18 @@ const CadAluno = () => {
 
       <SafeAreaView style={styles.form}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
           placeholder="Nome Completo"
           placeholderTextColor="#000"
+          value={nome}
+          onChangeText={setNome}
         />
+        {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
 
-        <View style={styles.pickerContainer}>
+        <View style={[styles.pickerContainer, { borderColor: errorSerie ? 'red' : '#40A2E3' }]}>
           <Picker
             selectedValue={selectedSerie}
-            onValueChange={(itemValue) => setSelectedSerie(itemValue)}
+            onValueChange={itemValue => setSelectedSerie(itemValue)}
             style={styles.picker}
           >
             <Picker.Item label="Selecione a série do aluno" value="" />
@@ -35,11 +82,12 @@ const CadAluno = () => {
             <Picker.Item label="3ª Série" value="3" />
           </Picker>
         </View>
+        {errorSerie ? <Text style={styles.errorMessage}>{errorSerie}</Text> : null}
 
-        <View style={styles.pickerContainer}>
+        <View style={[styles.pickerContainer, { borderColor: errorCurso ? 'red' : '#40A2E3' }]}>
           <Picker
             selectedValue={selectedCurso}
-            onValueChange={(itemValue) => setSelectedCurso(itemValue)}
+            onValueChange={itemValue => setSelectedCurso(itemValue)}
             style={styles.picker}
           >
             <Picker.Item label="Selecione o curso do aluno" value="" />
@@ -48,9 +96,10 @@ const CadAluno = () => {
             <Picker.Item label="LOG" value="L" />
           </Picker>
         </View>
+        {errorCurso ? <Text style={styles.errorMessage}>{errorCurso}</Text> : null}
       </SafeAreaView>
 
-      <TouchableOpacity style={styles.btnCon}>
+      <TouchableOpacity style={styles.btnCon} onPress={salvar}>
         <Text style={styles.txtCon}>Continuar</Text>
       </TouchableOpacity>
     </View>
@@ -68,8 +117,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    width: 350,
-    height: 350,
+    marginTop:40,
+    width:300,
+    height: 300,
   },
   titulo: {
     marginTop:30,
@@ -118,6 +168,11 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  errorMessage: {
+    color: 'red',
+    fontSize: 12,
+    marginLeft: 10,
   },
 });
 

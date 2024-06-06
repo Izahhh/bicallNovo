@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Image } from "expo-image";
 import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,8 @@ import { Padding, FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 const ConectarProfessor = () => {
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [login, setLogin] = useState("");
+  const [senha, setSenha] = useState("");
 
   useEffect(() => {
     async function loadFont() {
@@ -22,6 +24,14 @@ const ConectarProfessor = () => {
   }, []);
 
   const handleLogin = () => {
+    if (login.trim() === "") {
+      Alert.alert("Atenção", "Por favor, preencha o campo de login.");
+      return;
+    }
+    if (senha.trim() === "") {
+      Alert.alert("Atenção", "Por favor, preencha o campo de senha.");
+      return;
+    }
     navigation.navigate('TelaPrincipal');
   };
 
@@ -44,10 +54,21 @@ const ConectarProfessor = () => {
           <Text style={styles.conectarSuaConta}>Conecte-se</Text>
         )}
         <View style={[styles.txtbox, styles.txtboxSpacing]}>
-          <TextInput style={styles.txtInput} placeholder="Login" />
+          <TextInput
+            style={styles.txtInput}
+            placeholder="Login"
+            value={login}
+            onChangeText={setLogin}
+          />
         </View>
         <View style={[styles.txtbox, styles.txtboxSpacing]}>
-          <TextInput style={styles.txtInput} placeholder="Senha" secureTextEntry={true} />
+          <TextInput
+            style={styles.txtInput}
+            placeholder="Senha"
+            secureTextEntry={true}
+            value={senha}
+            onChangeText={setSenha}
+          />
         </View>
         
         <TouchableOpacity style={styles.btnContinuar} onPress={handleLogin}>
@@ -68,7 +89,7 @@ const ConectarProfessor = () => {
 
 const styles = StyleSheet.create({
   txtboxSpacing: {
-    marginVertical: 8, // espacamento entre os inputs
+    marginVertical: 8,
   },
   cadprofessor: {
     flex: 1,
@@ -80,8 +101,8 @@ const styles = StyleSheet.create({
   banner: {
     alignItems: "center",
     flexDirection: "row",
-    marginTop: 50, // altura de todos os itens
-    marginBottom: -220, // espacamento entre os inputs e o conectar
+    marginTop: 50,
+    marginBottom: -220,
   },
   logo: {
     width: 40,
