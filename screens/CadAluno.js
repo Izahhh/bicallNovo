@@ -29,26 +29,9 @@ const CadAluno = () => {
       setErrorCurso("Por favor, selecione o curso do aluno");
       error = true;
     }
-    return !error;
+    
   };
 
-  const salvar = () => {
-    if (validar()) {
-      const data = {
-        nome: nome,
-        serie: selectedSerie,
-        curso: selectedCurso
-      };
-      // Substitua esta chamada com a chamada para o serviço apropriado
-      usuarioService.cadastrarAluno(data)
-        .then(response => {
-          // Lógica de tratamento da resposta
-        })
-        .catch(error => {
-          // Lógica de tratamento de erro
-        });
-    }
-  };
 
   return (
     <View style={styles.cadaluno}>
@@ -99,7 +82,7 @@ const CadAluno = () => {
         {errorCurso ? <Text style={styles.errorMessage}>{errorCurso}</Text> : null}
       </SafeAreaView>
 
-      <TouchableOpacity style={styles.btnCon} onPress={salvar}>
+      <TouchableOpacity style={styles.btnCon} onPress={validar}>
         <Text style={styles.txtCon}>Continuar</Text>
       </TouchableOpacity>
     </View>

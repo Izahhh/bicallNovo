@@ -1,291 +1,142 @@
-import * as React from "react";
-import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import { Image } from "expo-image";
-import { Color, FontFamily, Padding, FontSize } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { Text, SafeAreaView, StyleSheet, View, Image, ScrollView } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const VerificarAluno = () => {
-  return (
-    <View style={[styles.verificaraluno, styles.td3FlexBox]}>
-      <View style={[styles.rodape, styles.rodapePosition]}>
-        <View style={[styles.blocoamarelorodape, styles.rodapePosition]} />
-        <View style={[styles.blocoazulbaixo, styles.blocoazulcimaLayout]} />
-        <Image
-          style={styles.logotipo3Icon}
-          contentFit="cover"
-          source={require("../assets/imgs/logotipo.png")}
-        />
-      </View>
-      <View style={[styles.banner, styles.bannerPosition]}>
-        <View style={[styles.blocoamarelo, styles.blocoamareloPosition]} />
-        <Text style={[styles.titulo, styles.tituloTypo]}>CALL</Text>
-        <View style={[styles.blocoazulcima, styles.blocoamareloPosition]} />
-        <View style={[styles.blocoazulmeio, styles.blocoamareloPosition]} />
-        <Image
-          style={[styles.logotipo2Icon, styles.bannerPosition]}
-          contentFit="cover"
-          source={require("../assets/imgs/logotipo.png")}
-        />
-        <Text style={styles.biometric}>BIOMETRIC</Text>
-      </View>
-      <Text style={[styles.txtcad, styles.tituloTypo]}>VERIFICAR ALUNO</Text>
-      <View style={styles.table}>
-        <View style={styles.thead}>
-          <View style={[styles.th, styles.thFlexBox]}>
-            <Text style={[styles.nome, styles.rmTypo]}>NOME</Text>
-          </View>
-          <View style={[styles.th1, styles.thFlexBox]}>
-            <Text style={[styles.rm, styles.rmTypo]}>RM</Text>
-          </View>
-          <View style={[styles.th2, styles.thFlexBox]}>
-            <Text style={[styles.nome, styles.rmTypo]}>PRESENÇA</Text>
-          </View>
-        </View>
-        <View style={styles.tbody}>
-          <View style={[styles.tr, styles.trBorder]}>
-            <View style={[styles.td, styles.tdLayout]} />
-            <View style={[styles.td1, styles.tdLayout]} />
-          </View>
-          <View style={[styles.tr1, styles.trBorder]}>
-            <View style={[styles.td2, styles.tdLayout]} />
-            <View style={[styles.td3, styles.td3FlexBox]} />
-            <View style={[styles.td1, styles.tdLayout]} />
-          </View>
-        </View>
-      </View>
+// Um componente pode receber dados através de propriedades (props), permitindo que você crie componentes reutilizáveis e passe dados específicos para eles.
+const orders = [
+  { nome: 'Betty Sheldon', rm: '#1213', presenca: false },
+  { nome: 'Francisca Austin', rm: '#1213', presenca: false },
+  { nome: 'Oscar Clausing', rm: '#1213', presenca: true },
+  { nome: 'Cynthia Back', rm: '#1213', presenca: true },
+  { nome: 'Pauline Brown', rm: '#1213', presenca: false },
+  { nome: 'Jennifer Walters', rm: '#1213', presenca: false },
+  { nome: 'Betty Sheldon', rm: '#1213', presenca: false },
+  { nome: 'Francisca Austin', rm: '#1213', presenca: false },
+  { nome: 'Oscar Clausing', rm: '#1213', presenca: true },
+  { nome: 'Cynthia Back', rm: '#1213', presenca: true },
+  { nome: 'Pauline Brown', rm: '#1213', presenca: false },
+  { nome: 'Jennifer Walters', rm: '#1213', presenca: false },
+  { nome: 'Betty Sheldon', rm: '#1213', presenca: false },
+  { nome: 'Francisca Austin', rm: '#1213', presenca: false },
+  { nome: 'Oscar Clausing', rm: '#1213', presenca: true },
+  { nome: 'Cynthia Back', rm: '#1213', presenca: true },
+  { nome: 'Pauline Brown', rm: '#1213', presenca: false },
+  { nome: 'Jennifer Walters', rm: '#1213', presenca: false },
+];
+
+// Componente que recebe um objeto order como uma propriedade.
+const TableRow = ({ order }) => (
+  <View style={styles.tableRow}>
+    <Text style={[styles.tableCell, styles.cellName]}>{order.nome}</Text>
+    <Text style={[styles.tableCell, styles.cellId]}>{order.rm}</Text>
+    <View style={[styles.tableCell, styles.cellIcon]}>
+      <Icon 
+        name={order.presenca ? "check-circle" : "times-circle"} 
+        size={24} 
+        color={order.presenca ? "green" : "red"} 
+      />
     </View>
+  </View>
+);
+
+// Componente principal do aplicativo
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        {/* Título */}
+        <View style={styles.banner}>
+          <Image
+            source={require('../assets/imgs/logotipo.png')}
+            style={styles.image}
+          />
+          <Text style={styles.titulo}>Cadastrar Aluno</Text>
+        </View>
+        {/* Tabela */}
+        <View style={styles.table}>
+          {/* Cabeçalho da Tabela */}
+          <View style={styles.tableHeader}>
+            <Text style={[styles.tableCellHeader, styles.cellName]}>Nome</Text>
+            <Text style={[styles.tableCellHeader, styles.cellId]}>RM</Text>
+            <Text style={[styles.tableCellHeader, styles.cellIcon]}>Presença</Text>
+          </View>
+          {/* Linhas da Tabela */}
+          {orders.map((order) => (
+            <TableRow key={order.nome} order={order} />
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  td3FlexBox: {
-    overflow: "hidden",
+  container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
-  rodapePosition: {
-    width: 367,
-    left: "50%",
-    top: "50%",
-    position: "absolute",
-  },
-  blocoazulcimaLayout: {
-    height: 20,
-    backgroundColor: Color.colorDeepskyblue,
-  },
-  bannerPosition: {
-    left: "50%",
-    top: "50%",
-    position: "absolute",
-  },
-  blocoamareloPosition: {
-    marginLeft: -184,
-    width: 360,
-    left: "50%",
-    top: "50%",
-    position: "absolute",
-  },
-  tituloTypo: {
-    textAlign: "left",
-    fontFamily: FontFamily.interBold,
-    fontWeight: "700",
-    left: "50%",
-    top: "50%",
-    position: "absolute",
-  },
-  thFlexBox: {
-    paddingVertical: Padding.p_base,
-    paddingHorizontal: Padding.p_13xl,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    overflow: "hidden",
-    flex: 1,
-  },
-  rmTypo: {
-    color: Color.colorBlack,
-    fontSize: FontSize.size_xs,
-    textAlign: "center",
-    fontFamily: FontFamily.interBold,
-    fontWeight: "700",
-  },
-  trBorder: {
-    borderBottomWidth: 1,
-    borderColor: Color.colorPowderblue,
-    flexDirection: "row",
-    alignSelf: "stretch",
-    backgroundColor: Color.colorPowderblue,
-    overflow: "hidden",
-    borderStyle: "solid",
-  },
-  tdLayout: {
-    height: 62,
-    overflow: "hidden",
-    flex: 1,
-  },
-  blocoamarelorodape: {
-    marginTop: -22.5,
-    marginLeft: -183.5,
-    height: 65,
-    backgroundColor: Color.colorOrange,
-  },
-  blocoazulbaixo: {
-    marginTop: -42.5,
-    marginLeft: -181.5,
-    width: 360,
-    height: 20,
-    left: "50%",
-    top: "50%",
-    position: "absolute",
-  },
-  logotipo3Icon: {
-    top: 31,
-    left: 14,
-    width: 42,
-    height: 42,
-    position: "absolute",
-  },
-  rodape: {
-    marginTop: 319,
-    marginLeft: -180,
-    height: 85,
-  },
-  blocoamarelo: {
-    height: 141,
-    marginTop: -77,
-    marginLeft: -184,
-    backgroundColor: Color.colorOrange,
-  },
-  titulo: {
-    marginTop: 3,
-    marginLeft: -82,
-    fontSize: FontSize.size_5xl,
-    letterSpacing: 7.9,
-    color: Color.colorSaddlebrown,
-    width: 235,
-    height: 50,
-  },
-  blocoazulcima: {
-    marginTop: -77,
-    marginLeft: -184,
-    height: 20,
-    backgroundColor: Color.colorDeepskyblue,
-  },
-  blocoazulmeio: {
-    marginTop: 53,
-    height: 24,
-    marginLeft: -184,
-    backgroundColor: Color.colorDeepskyblue,
-  },
-  logotipo2Icon: {
-    marginTop: -43,
-    marginLeft: -194,
-    width: 133,
-    height: 115,
-  },
-  biometric: {
-    marginTop: -49,
-    marginLeft: -166,
-    fontSize: FontSize.size_21xl,
-    fontFamily: FontFamily.baloo,
-    color: Color.colorOldlace,
-    height: 63,
-    textAlign: "center",
-    width: 360,
-    left: "50%",
-    top: "50%",
-    position: "absolute",
+  scrollViewContainer: {
+    alignItems: 'center',
+    padding: 20,
   },
   banner: {
-    marginTop: -400,
-    marginLeft: -190,
-    width: 388,
-    height: 154,
+    alignItems: 'center',
+    marginBottom: 20,
+    flexDirection: 'row'
   },
-  txtcad: {
-    marginTop: -200,
-    marginLeft: -146,
-    fontSize: FontSize.size_xl,
-    color: Color.colorWhite,
-    width: 299,
-  },
-  nome: {
-    width: 74,
-  },
-  th: {
-    zIndex: 2,
-  },
-  rm: {
-    width: 75,
-  },
-  th1: {
-    zIndex: 1,
-  },
-  th2: {
-    zIndex: 0,
-  },
-  thead: {
-    backgroundColor: Color.colorWhite,
-    flexDirection: "row",
-    alignSelf: "stretch",
-    overflow: "hidden",
-  },
-  td: {
-    zIndex: 1,
-  },
-  td1: {
-    zIndex: 0,
-  },
-  tr: {
-    height: 80,
-    zIndex: 1,
-  },
-  td2: {
-    zIndex: 2,
-  },
-  td3: {
-    height: 47,
-    zIndex: 1,
-  },
-  tr1: {
-    height: 83,
-    zIndex: 0,
-  },
-  tbody: {
-    height: 298,
-    alignSelf: "stretch",
-    backgroundColor: Color.colorPowderblue,
-    overflow: "hidden",
+  titulo: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFA500',
   },
   table: {
-    top: 238,
-    left: 18,
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 4,
-    elevation: 4,
-    shadowOpacity: 1,
-    borderRadius: 6,
-    borderColor: Color.colorBlack,
-    width: 319,
-    height: 398,
-    backgroundColor: Color.colorPowderblue,
-    position: "absolute",
-    overflow: "hidden",
+    width: '100%',
+    marginTop: 20,
     borderWidth: 1,
-    borderStyle: "solid",
+    borderColor: '#ddd',
+    borderRadius: 10,
+    overflow: 'hidden',
   },
-  verificaraluno: {
-    backgroundColor: Color.colorLightblue,
-    borderColor: Color.colorOldlace,
-    width: "100%",
-    height: 800,
-    borderWidth: 1,
-    borderStyle: "solid",
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#f0f0f0',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+  },
+  tableCell: {
+    padding: 10,
     flex: 1,
+    textAlign: 'left',
+  },
+  tableCellHeader: {
+    padding: 10,
+    flex: 1,
+    textAlign: 'center',
+  },
+  cellName: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  cellId: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  cellIcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  image: {
+    width: 30,
+    height: 30,
+    marginRight: 20,
   },
 });
 
-export default VerificarAluno;
