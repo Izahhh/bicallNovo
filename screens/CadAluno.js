@@ -78,24 +78,6 @@ const CadAluno = () => {
           onChangeText={setNome}
         />
 
-        {errorEnd ? <Text style={styles.errorMessage}>{errorEnd}</Text> : null}
-        <TextInput
-          style={[styles.input, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
-          placeholder="Endereço"
-          placeholderTextColor="#000"
-          value={endereco}
-          onChangeText={setEndereco}
-        />
-        
-        {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
-         <TextInput
-          style={[styles.input, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
-          placeholder="Numero"
-          placeholderTextColor="#000"
-          value={numEnd}
-          onChangeText={setNumEnd}
-        />
-
         <TextInput
           style={styles.input}
           placeholder="CEP"
@@ -104,6 +86,27 @@ const CadAluno = () => {
           onChangeText={(text) => setCep(text)}
           onBlur={buscarCEP}
         />
+
+        <SafeAreaView style={styles.divEndNum}>
+        {errorEnd ? <Text style={styles.errorMessage}>{errorEnd}</Text> : null}
+        <TextInput
+          style={[styles.inputEnd, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
+          placeholder="Endereço"
+          placeholderTextColor="#000"
+          value={endereco}
+          onChangeText={setEndereco}
+        />
+        
+        {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
+         <TextInput
+          style={[styles.inputNum, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
+          placeholder="Numero"
+          placeholderTextColor="#000"
+          value={numEnd}
+          onChangeText={setNumEnd}
+        />
+
+        </SafeAreaView>
 
         <TextInput
           style={styles.input}
@@ -148,6 +151,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+
+  divEndNum:{
+flex: 1,
+flexDirection:"row",
+ marginBottom: 20,
+  },
   input: {
     height: 50,
     backgroundColor: '#FFF',
@@ -158,6 +167,30 @@ const styles = StyleSheet.create({
     borderColor: '#40A2E3',
     borderWidth: 1,
   },
+inputEnd: {
+    height: 50,
+    width:'60%',
+    backgroundColor: '#FFF',
+    borderRadius: 25,
+    paddingLeft: 20,
+    marginBottom: 20,
+    fontSize: 16,
+    borderColor: '#40A2E3',
+    borderWidth: 1,
+  },
+
+  inputNum: {
+    height: 50,
+    width:'30%',
+    backgroundColor: '#FFF',
+    borderRadius: 25,
+    paddingLeft: 20,
+    marginBottom: 20,
+    fontSize: 16,
+    borderColor: '#40A2E3',
+    borderWidth: 1,
+  },
+
   pickerContainer: {
     height: 50,
     backgroundColor: '#FFF',
