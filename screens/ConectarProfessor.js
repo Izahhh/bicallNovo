@@ -32,7 +32,7 @@ const ConectarProfessor = () => {
       Alert.alert("Atenção", "Por favor, preencha o campo de senha.");
       return;
     }
-    navigation.navigate('TelaPrincipal');
+    navigation.navigate('telaCurso');
   };
 
   const handleCadastro = () => {

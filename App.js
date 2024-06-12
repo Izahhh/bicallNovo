@@ -9,6 +9,8 @@ import AtualizarAluno from "./screens/AtualizarAluno";
 import ApagarAluno from "./screens/ApagarAluno";
 import VerificarAluno from "./screens/VerificarAluno";
 import CadastrarProfessor from "./screens/CadastrarProfessor";
+import TelaCurso from "./screens/telaCurso";
+import TelaSerie from "./screens/telaSerie";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
@@ -26,6 +28,20 @@ const App = () => {
             <Stack.Screen
               name="ConectarProfessor"
               component={ConectarProfessor}
+              options={{ headerShown: false }}
+            />
+
+        
+            <Stack.Screen
+            //nome arquivo
+              name="telaCurso"
+              component={TelaCurso}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+            //nome arquivo
+              name="telaSerie"
+              component={TelaSerie}
               options={{ headerShown: false }}
             />
             <Stack.Screen

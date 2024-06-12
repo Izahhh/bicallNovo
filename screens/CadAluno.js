@@ -5,31 +5,56 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CadAluno = () => {
   const [nome, setNome] = useState("");
-  const [selectedSerie, setSelectedSerie] = useState("");
-  const [selectedCurso, setSelectedCurso] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [errorEnd, setErrorEnd] = useState("");  
+  const [errorNum, setErrorNum] = useState("");
   const [errorNome, setErrorNome] = useState("");
-  const [errorSerie, setErrorSerie] = useState("");
-  const [errorCurso, setErrorCurso] = useState("");
+  const [numEnd, setNumEnd] = useState("");
+  const [cep, setCep] = useState("");
+
+  const buscarCEP = async () => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+      if (data.erro) {
+        setErrorEnd("CEP não encontrado");
+      } else {
+        setEndereco(data.logradouro);
+        setBairro(data.bairro);
+        // Você pode adicionar outros campos aqui, como cidade, estado, etc.
+        setErrorEnd("");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      setErrorEnd("Erro ao buscar CEP");
+    }
+  };
 
   const validar = () => {
     let error = false;
     setErrorNome("");
-    setErrorSerie("");
-    setErrorCurso("");
+    setErrorEnd("");
+    setErrorNum("");
 
     if (nome.trim() === "") {
       setErrorNome("Por favor, insira o nome do aluno");
       error = true;
     }
-    if (selectedSerie === "") {
-      setErrorSerie("Por favor, selecione a série do aluno");
+    if (endereco.trim() === "") {
+      setErrorEnd("Por favor, insira o endereço do aluno");
       error = true;
     }
-    if (selectedCurso === "") {
-      setErrorCurso("Por favor, selecione o curso do aluno");
+    if (numEnd.trim() === "") {
+      setErrorNum("Por favor, insira o número da casa");
       error = true;
     }
     
+    if (!error) {
+      // Se não houver erros, continuar com a lógica necessária
+      // Por exemplo, enviar os dados do aluno para o servidor ou realizar outra ação
+      console.log("Dados válidos, continuar...");
+    }
   };
 
 
@@ -44,6 +69,7 @@ const CadAluno = () => {
       </SafeAreaView>
 
       <SafeAreaView style={styles.form}>
+        {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
         <TextInput
           style={[styles.input, { borderColor: errorNome ? 'red' : '#40A2E3' }]}
           placeholder="Nome Completo"
@@ -51,35 +77,41 @@ const CadAluno = () => {
           value={nome}
           onChangeText={setNome}
         />
-        {errorNome ? <Text style={styles.errorMessage}>{errorNome}</Text> : null}
 
-        <View style={[styles.pickerContainer, { borderColor: errorSerie ? 'red' : '#40A2E3' }]}>
-          <Picker
-            selectedValue={selectedSerie}
-            onValueChange={itemValue => setSelectedSerie(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Selecione a série do aluno" value="" />
-            <Picker.Item label="1ª Série" value="1" />
-            <Picker.Item label="2ª Série" value="2" />
-            <Picker.Item label="3ª Série" value="3" />
-          </Picker>
-        </View>
-        {errorSerie ? <Text style={styles.errorMessage}>{errorSerie}</Text> : null}
+        {errorEnd ? <Text style={styles.errorMessage}>{errorEnd}</Text> : null}
+        <TextInput
+          style={[styles.input, { borderColor: errorEnd ? 'red' : '#40A2E3' }]}
+          placeholder="Endereço"
+          placeholderTextColor="#000"
+          value={endereco}
+          onChangeText={setEndereco}
+        />
+        
+        {errorNum ? <Text style={styles.errorMessage}>{errorNum}</Text> : null}
+         <TextInput
+          style={[styles.input, { borderColor: errorNum ? 'red' : '#40A2E3' }]}
+          placeholder="Numero"
+          placeholderTextColor="#000"
+          value={numEnd}
+          onChangeText={setNumEnd}
+        />
 
-        <View style={[styles.pickerContainer, { borderColor: errorCurso ? 'red' : '#40A2E3' }]}>
-          <Picker
-            selectedValue={selectedCurso}
-            onValueChange={itemValue => setSelectedCurso(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Selecione o curso do aluno" value="" />
-            <Picker.Item label="ADM" value="A" />
-            <Picker.Item label="DS" value="D" />
-            <Picker.Item label="LOG" value="L" />
-          </Picker>
-        </View>
-        {errorCurso ? <Text style={styles.errorMessage}>{errorCurso}</Text> : null}
+        <TextInput
+          style={styles.input}
+          placeholder="CEP"
+          placeholderTextColor="#000"
+          value={cep}
+          onChangeText={(text) => setCep(text)}
+          onBlur={buscarCEP}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Bairro"
+          placeholderTextColor="#000"
+          value={bairro}
+          onChangeText={setBairro}
+        />
       </SafeAreaView>
 
       <TouchableOpacity style={styles.btnCon} onPress={validar}>
