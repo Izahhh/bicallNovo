@@ -13,6 +13,8 @@ import TelaCurso from "./screens/telaCurso";
 import TelaSerie from "./screens/telaSerie";
 import TelaDados from "./screens/telaDados"; // Importe a nova tela
 
+
+//teste
 const Stack = createNativeStackNavigator();
 
 const App = () => {
